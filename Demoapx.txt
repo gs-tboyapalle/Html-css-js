@@ -1,0 +1,19 @@
+public class Demo {
+
+    @future
+    public static void test1(){
+        System.debug('Helloo');
+    }
+    public static boolean a=false;
+    
+    public static void test2(){
+        if(a) return;
+        a=true;
+        test1single();
+    }
+    
+    @future
+    public static void test1single(){
+        System.debug('Helloo');
+    }
+}

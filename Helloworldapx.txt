@@ -1,0 +1,8 @@
+public class HelloWorld {
+    public static void sayHello(){
+        System.debug('Helloo');
+    }
+    public void sayMe(){
+      	System.debug('Me');  
+    }
+}

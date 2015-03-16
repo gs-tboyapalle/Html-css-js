@@ -1,0 +1,76 @@
+string s= 'Hello all'; 
+system.debug(s);
+integer a=10;
+system.debug(string.valueof(a));
+system.debug(s.endswith('l'));
+enum season {WINTER,SUMMER}
+season B = season.summer;
+system.debug(integer.valueof(season.winter));
+if(B==season.WINTER)
+system.debug(B);
+else
+    system.debug(integer.valueof(B)+2);
+
+
+system.Debug('hello');
+
+list<string> l=new list<string>();
+system.debug(l.size());
+Integer[] i=new Integer[10];
+system.debug(i.size());
+i[0]=67;
+system.Debug(i[0]);
+
+
+
+Merchandise__c[] ml = new List<Merchandise__c>();
+for (Integer i=0;i<250;i++) {
+   Merchandise__c m = new Merchandise__c(
+       Name='Merchandise ' + i,
+       Price__c=2,
+       Quantity__c=100);
+   ml.add(m);
+}
+insert ml;
+
+
+
+String query = 'SELECT Id,CreatedDate FROM Merchandise__c ' + 
+    'WHERE Id NOT IN (SELECT Merchandise__c FROM Line_Item__c)';
+CleanUpRecords c = new CleanUpRecords(query);
+Database.executeBatch(c);
+
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+Demo.test1();
+
+Demo.test2();
+Demo.test2();
+Demo.test2();
+Demo.test2();
+Demo.test2();
+
+boolean a;
+IF(a==true)
+    System.debug('HEY');
+ELSE
+    System.debug('UMM');
+
+
+string s= 'hello'; 
+string t= 'HELLO'; 
+system.debug(s===t);
+
+
+
+TestBroker t = new TestBroker();
+t.FetchAccounts();

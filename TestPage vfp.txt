@@ -1,0 +1,131 @@
+<apex:page controller="TestBroker">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <h1>Test Page</h1><br/><br/>
+  
+   <button class="btn" data-toggle="modal" data-target="#myModal">
+      New
+    </button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header" data-dismiss="modal">
+           <h4> Add new account</h4>
+         </div>
+         <div class="modal-body">
+           <label>Name</label>
+            <input type="text" class="nametb" />
+           <label>Phone</label>
+            <input type="text" class="phonetb" />
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary booth">
+               Submit 
+            </button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+<script>
+$('#myModal').on('hidden', function (event) {
+$(".nametb").empty();
+});
+</script>
+</div>
+
+  
+  
+  
+  <input type="button" value="Test" onclick="Click()"/>
+  
+  <table id="tb1" class="table" border="1">
+  <tr>
+      <td>Edit</td>
+      <td>Delete</td>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Phone No</td>
+      <td>Billing City</td>
+      <td>Owner</td>
+  </tr>
+  </table>
+  
+  <script>
+  
+ 
+  
+  
+  function Click(){
+  Visualforce.remoting.Manager.invokeAction(
+           '{!$RemoteAction.TestBroker.getAccounts}',
+           function(result, event){
+            if (event.status) {
+                   // Get DOM IDs for HTML and Visualforce elements like this
+                  
+                  var a=["Id","Name","Phone","BillingCity","OwnerId"];
+                  for(var k=0;k<result.length;k++)
+                  for(var j=0;j<a.length;j++){
+                  
+                  if(result[k][a[j]]==undefined)
+                      result[k][a[j]]='-';
+                  }
+                  var edit='<a href="#myModal" data-toggle="modal">Edit</a>';
+                  var del='<a href=#>Delete</a>';
+                  if($("#tb1 tr").length>1){
+                  $(".dyn").remove();
+                  }
+                  
+                  for(var i=0;i<result.length;i++){
+                        $("#tb1").append( "<tr class='dyn'>"+"<td class='edit'>"+edit+"</td>"+"<td class='del'>"+del+"</td>"+"<td>"+result[i].Id+"</td>"+"<td>"+result[i].Name+"</td>"+"<td>"+result[i].Phone+"</td>"+"<td>"+result[i].BillingCity+"</td>"+"<td>"+result[i].OwnerId+"</td>"+"</tr>");                        }
+               } else if (event.type === 'exception') {
+                  renderErrorFunction(dashboardItem,event.message);
+               } else {
+                renderErrorFunction(dashboardItem,event.message);
+               }
+           }, 
+           {escape: false}
+       );
+  }
+  
+  var id=null;
+  $(".booth").click(function(){
+            var ob={};
+            ob.name=$(".nametb").val();
+            ob.phone=$(".phonetb").val();
+            ob.id=id;
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.TestBroker.setAccounts}',
+            JSON.stringify(ob),function(result,events){}
+            );
+        id=null;
+         Click();
+
+        
+            $('#myModal').modal('hide');
+        });
+  
+        $("#tb1").on('click', '.edit',function() { 
+        
+          var row = $(this).parent().find('td:nth-child(4)').html();           
+           $(".nametb").val(row); 
+           row = $(this).parent().find('td:nth-child(5)').html();
+            $(".phonetb").val(row);
+          id= $(this).parent().find('td:nth-child(3)').html();
+       }); 
+       
+        $("#tb1").on('click', '.del',function() { 
+             
+           id=$(this).parent().find('td:nth-child(3)').html();
+            Visualforce.remoting.Manager.invokeAction(
+           '{!$RemoteAction.TestBroker.delAccounts}',
+           id,function(result,events){}
+           );    
+        
+          Click();
+        });
+  
+  </script>
+ 
+</apex:page>s

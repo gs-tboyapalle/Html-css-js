@@ -1,0 +1,33 @@
+global class TestBroker {
+    public TestBroker(){}
+    @RemoteAction
+    global static List<Account> getAccounts(){
+        List<Account> ob= [SELECT ID,Name,Phone,Billingcity,OwnerId FROM Account]; 
+    return ob;
+    }
+    @RemoteAction
+    global static void setAccounts(String accounts){
+       Map<String, Object> reqObj = (Map<String, Object>) JSON.deserializeUntyped(accounts);
+        String name = (reqObj.containsKey('name')) ? (String) reqObj.get('name') : null;
+        String phone = (reqObj.containsKey('phone')) ? (String) reqObj.get('phone') : null;
+        String id = (reqObj.containsKey('id')) ? (String) reqObj.get('id') : null;
+      	System.debug(id);
+     
+      if(id==null){
+       Account ac=new Account(Name=name,Phone=phone);  
+       insert ac;
+       }
+       else{
+       Account ac=[SELECT Name,Phone from Account where Id=:id];
+       ac.Name=name;
+       ac.Phone=phone;
+       update ac;
+       }
+    }
+    @RemoteAction
+    global static void delAccounts(String id){
+        Account ac=[SELECT Name,Phone from Account where Id=:id];
+       delete ac; 
+        
+	}
+}

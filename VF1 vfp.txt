@@ -1,0 +1,18 @@
+<apex:page >
+    <html>
+        <head>
+        </head>
+        <body>
+            Helloooo
+            <div>
+                Name:<input type="text" length="15" id="n1"/>
+                <input type="button" id="b1" value="submit" onclick="Hello()"/>
+            </div>
+            <script>
+            function Hello(){
+                alert("Heyy"+document.getElementById(n1).text);
+                }
+            </script>
+        </body>
+    </html>
+</apex:page>
